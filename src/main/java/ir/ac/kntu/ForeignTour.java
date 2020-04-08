@@ -80,10 +80,11 @@ public class ForeignTour extends Tour {
     }
 
     public String customToString() {
+        String lastName=tourLeader.getLName();
         return "tour name='" + fullName + '\'' +
                 ", startingDate=" + startingDate +
                 ", finishingDate=" + finishingDate +
-                ", tour leader=" + tourLeader.getLName();
+                ", tour leader=" + lastName;
     }
 
     ForeignTour(){}
