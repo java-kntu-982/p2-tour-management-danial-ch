@@ -15,13 +15,13 @@ public class AttractionHandle {
     public static void addAttraction(){
         //ClearScreen.cls();
         String name,city;
-        int choice;
+        int choice,i;
         Scanner input=new Scanner(System.in);
         Attraction attraction=new Attraction();
         System.out.println("Enter attraction's name");
         name=input.nextLine();
         System.out.println("Choose a city in witch attraction is in");
-        for(int i=0;i<Main.locations.size();i++){
+        for(i=0;i<Main.locations.size();i++){
             System.out.println((i+1)+")"+Main.locations.get(i).getCityName());
         }
         while(true){
@@ -32,7 +32,7 @@ public class AttractionHandle {
             }
             break;
         }
-        for(int i=0;i<Main.locations.size();i++){
+        for(i=0;i<Main.locations.size();i++){
             if(choice==i){
                 city=Main.locations.get(i).getCityName();
                 attraction.setCity(city);
@@ -40,6 +40,7 @@ public class AttractionHandle {
         }
         attraction.setName(name);
         Main.attractions.add(attraction);
+        Main.locations.get(i).getAttractions().add(attraction);
         System.out.println("Attraction added successfully");
         backToMenu();
     }
