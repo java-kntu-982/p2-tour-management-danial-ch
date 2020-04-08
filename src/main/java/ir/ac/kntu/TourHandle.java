@@ -217,7 +217,7 @@ public class TourHandle {
                     break;
                 }
                 for(int j=0;j<Main.locations.size();j++){
-                    if(i==j){
+                    if(cityChoice==j){
                         locations.add(Main.locations.get(j));
                     }
                 }
