@@ -4,9 +4,9 @@ import java.util.LinkedList;
 
 public class Location {
     private String cityName;
-    private LinkedList<Attraction> attractions=new LinkedList<Attraction>();
-    private boolean show=true;
-    private Country country=null;
+    private LinkedList<Attraction> attractions = new LinkedList<Attraction>();
+    private boolean show = true;
+    private Country country = null;
 
     public Country getCountry() {
         return country;
@@ -48,5 +48,6 @@ public class Location {
                 '}';
     }
 
-    Location(){}
+    Location() {
+    }
 }

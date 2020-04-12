@@ -1,61 +1,73 @@
 package ir.ac.kntu;
+
 import ir.ac.kntu.maputil.MapUtil;
 
 import java.util.*;
 
 public class Menu {
-    public static void mainMenu(){
+    public static void mainMenu() {
         //ClearScreen.cls();
-        Scanner input=new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to see tour leaders menu");
         System.out.println("Enter 2 to see tours menu");
         System.out.println("Enter 3 to see attractions menu");
         System.out.println("Enter 4 to see maps menu");
         System.out.println("Enter 5 to see locations menu");
-        int answer=input.nextInt();
-        switch (answer){
+        int answer = input.nextInt();
+        switch (answer) {
             case 1:
-                tourLeaderMenu();break;
+                tourLeaderMenu();
+                break;
             case 2:
-                tourMenu();break;
+                tourMenu();
+                break;
             case 3:
-                attractionsMenu();break;
+                attractionsMenu();
+                break;
             case 4:
-                mapsMenu();break;
+                mapsMenu();
+                break;
             case 5:
-                locationsMenu();break;
+                locationsMenu();
+                break;
         }
     }
 
-    public static void tourLeaderMenu(){
+    public static void tourLeaderMenu() {
         //ClearScreen.cls();
-        Scanner input=new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to see all the leaders");
         System.out.println("Enter 2 to add a leader");
         System.out.println("Enter 3 to delete a leader");
         System.out.println("Enter 4 to edit a leader");
         System.out.println("Enter 5 search in leaders");
         System.out.println("Enter 6 to go back to main menu");
-        int answer=input.nextInt();
-        switch (answer){
+        int answer = input.nextInt();
+        switch (answer) {
             case 1:
-                TourLeaderHandle.seeAllLeaders();break;
+                TourLeaderHandle.seeAllLeaders();
+                break;
             case 2:
-                TourLeaderHandle.addLeader();break;
+                TourLeaderHandle.addLeader();
+                break;
             case 3:
-                TourLeaderHandle.deleteLeader();break;
+                TourLeaderHandle.deleteLeader();
+                break;
             case 4:
-                TourLeaderHandle.editLeader();break;
+                TourLeaderHandle.editLeader();
+                break;
             case 5:
-                TourLeaderHandle.searchInTourLeaders();break;
+                TourLeaderHandle.searchInTourLeaders();
+                break;
             case 6:
-                mainMenu();break;
+                mainMenu();
+                break;
         }
     }
 
-    public static void tourMenu(){
+    public static void tourMenu() {
         //ClearScreen.cls();
-        Scanner input=new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to see all the tour types");
         System.out.println("Enter 2 to see all the tours");
         System.out.println("Enter 3 to add a tour type");
@@ -66,57 +78,72 @@ public class Menu {
         System.out.println("Enter 8 to search in tour types");
         System.out.println("Enter 9 to search in tours");
         System.out.println("Enter 10 to go back to main menu");
-        int answer=input.nextInt();
-        switch (answer){
+        int answer = input.nextInt();
+        switch (answer) {
             case 1:
-                TourHandle.seeAllTourTypes();break;
+                TourHandle.seeAllTourTypes();
+                break;
             case 2:
-                TourHandle.seeAllTours();break;
+                TourHandle.seeAllTours();
+                break;
             case 3:
-                TourHandle.addTourTypeMain();break;
+                TourHandle.addTourTypeMain();
+                break;
             case 4:
-                TourHandle.addTourMain();break;
+                TourHandle.addTourMain();
+                break;
             case 5:
-                TourHandle.editTourType();break;
+                TourHandle.editTourType();
+                break;
             case 6:
-                TourHandle.editTour();break;
+                TourHandle.editTour();
+                break;
             case 7:
-                TourHandle.deleteTour();break;
+                TourHandle.deleteTour();
+                break;
             case 8:
-                TourHandle.searchTourType();break;
+                TourHandle.searchTourType();
+                break;
             case 9:
-                TourHandle.searchInTours();break;
+                TourHandle.searchInTours();
+                break;
             case 10:
-                mainMenu();break;
+                mainMenu();
+                break;
         }
     }
 
-    public static void attractionsMenu(){
+    public static void attractionsMenu() {
         //ClearScreen.cls();
-        Scanner input=new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to see all the attractions");
         System.out.println("Enter 2 to add an attraction");
         System.out.println("Enter 3 to edit an attraction");
         System.out.println("Enter 4 to delete an attraction");
         System.out.println("Enter 5 to go back to main menu");
-        int answer=input.nextInt();
-        switch (answer){
+        int answer = input.nextInt();
+        switch (answer) {
             case 1:
-                AttractionHandle.seeAllAttractions();break;
+                AttractionHandle.seeAllAttractions();
+                break;
             case 2:
-                AttractionHandle.addAttraction();break;
+                AttractionHandle.addAttraction();
+                break;
             case 3:
-                AttractionHandle.editAnAttraction();break;
+                AttractionHandle.editAnAttraction();
+                break;
             case 4:
-                AttractionHandle.deleteAnAttraction();break;
+                AttractionHandle.deleteAnAttraction();
+                break;
             case 5:
-                mainMenu();break;
+                mainMenu();
+                break;
         }
     }
 
-    public static void mapsMenu(){
+    public static void mapsMenu() {
         //ClearScreen.cls();
-        Scanner input=new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to show starting city of a tour on map");
         System.out.println("Enter 2 to show destination of a tour on map");
         System.out.println("Enter 3 to show starting city and destination of a tour on map");
@@ -125,30 +152,38 @@ public class Menu {
         System.out.println("Enter 6 to show a location on a map");
         System.out.println("Enter 7 to show two cities on map");
         System.out.println("Enter 8 to go back to main menu");
-        int answer=input.nextInt();
-        switch (answer){
+        int answer = input.nextInt();
+        switch (answer) {
             case 1:
-                MapHandle.showStartingCityOnMap();break;
+                MapHandle.showStartingCityOnMap();
+                break;
             case 2:
-                MapHandle.showDestinationOnMap();break;
+                MapHandle.showDestinationOnMap();
+                break;
             case 3:
-                MapHandle.showStartingCityAndDestinationOnMap();break;
+                MapHandle.showStartingCityAndDestinationOnMap();
+                break;
             case 4:
-                MapHandle.showCurrentCityOnMap();break;
+                MapHandle.showCurrentCityOnMap();
+                break;
             case 5:
-                MapHandle.showAllCitiesOfTourOnMap();break;
+                MapHandle.showAllCitiesOfTourOnMap();
+                break;
             case 6:
-                MapHandle.showLocationOnMap();break;
+                MapHandle.showLocationOnMap();
+                break;
             case 7:
-                MapHandle.showTwoCitiesOnMap();break;
+                MapHandle.showTwoCitiesOnMap();
+                break;
             case 8:
-                mainMenu();break;
+                mainMenu();
+                break;
         }
     }
 
-    public static void locationsMenu(){
+    public static void locationsMenu() {
         //ClearScreen.cls();
-        Scanner input=new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to see all the locations");
         System.out.println("Enter 2 to add a country");
         System.out.println("Enter 3 to add a city");
@@ -156,22 +191,29 @@ public class Menu {
         System.out.println("Enter 5 to delete a city");
         System.out.println("Enter 6 to edit a country");
         System.out.println("Enter 7 to go back to main menu");
-        int answer=input.nextInt();
-        switch (answer){
+        int answer = input.nextInt();
+        switch (answer) {
             case 1:
-                LocationHandle.seeAllLocations();break;
+                LocationHandle.seeAllLocations();
+                break;
             case 2:
-                LocationHandle.addCountry();break;
+                LocationHandle.addCountry();
+                break;
             case 3:
-                LocationHandle.addCity();break;
+                LocationHandle.addCity();
+                break;
             case 4:
-                LocationHandle.deleteCountry();break;
+                LocationHandle.deleteCountry();
+                break;
             case 5:
-                LocationHandle.deleteCity();break;
+                LocationHandle.deleteCity();
+                break;
             case 6:
-                LocationHandle.editCountry();break;
+                LocationHandle.editCountry();
+                break;
             case 7:
-                mainMenu();break;
+                mainMenu();
+                break;
         }
     }
 }

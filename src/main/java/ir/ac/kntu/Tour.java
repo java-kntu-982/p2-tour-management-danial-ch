@@ -11,7 +11,7 @@ public class Tour {
     private int maxAttendants;
     private int price;
     private Country country;
-    private LinkedList<Location> locations=new LinkedList<>();
+    private LinkedList<Location> locations = new LinkedList<>();
 
     public Country getCountry() {
 
@@ -109,5 +109,6 @@ public class Tour {
                 '}';
     }
 
-    Tour(){}
+    Tour() {
+    }
 }

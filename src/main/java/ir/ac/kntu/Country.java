@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Country {
     private String name;
-    private LinkedList<Location> locations=new LinkedList<>();
-    private boolean show=true;
+    private LinkedList<Location> locations = new LinkedList<>();
+    private boolean show = true;
 
     public boolean isShow() {
         return show;
@@ -44,5 +44,6 @@ public class Country {
         return Objects.hash(name, locations);
     }
 
-    Country(){}
+    Country() {
+    }
 }

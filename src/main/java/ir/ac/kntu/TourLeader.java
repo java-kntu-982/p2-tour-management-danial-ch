@@ -12,11 +12,11 @@ public class TourLeader {
     private boolean married;
     private ir.ac.kntu.Date birthDate;
     private ir.ac.kntu.Date registerDate;
-    private LinkedList<Location> knownLocations=new LinkedList<Location>();
-    private LinkedList<Country> knownCountries=new LinkedList<>();
+    private LinkedList<Location> knownLocations = new LinkedList<Location>();
+    private LinkedList<Country> knownCountries = new LinkedList<>();
     private Tour currentTour;
-    private ForeignTour foreignTour=null;
-    private LocalTour localTour=null;
+    private ForeignTour foreignTour = null;
+    private LocalTour localTour = null;
 
     public int getAge() {
         return age;
@@ -145,12 +145,12 @@ public class TourLeader {
     }
 
     public String toString() {
-        StringBuilder countries= new StringBuilder();
-        StringBuilder cities= new StringBuilder();
-        for(int i=0;i<this.getKnownCountries().size();i++){
+        StringBuilder countries = new StringBuilder();
+        StringBuilder cities = new StringBuilder();
+        for (int i = 0; i < this.getKnownCountries().size(); i++) {
             countries.append(this.getKnownCountries().get(i).getName()).append(",");
         }
-        for(int i=0;i<this.getKnownLocations().size();i++){
+        for (int i = 0; i < this.getKnownLocations().size(); i++) {
             cities.append(this.getKnownLocations().get(i).getCityName()).append(",");
         }
         return "FName='" + FName + '\'' +

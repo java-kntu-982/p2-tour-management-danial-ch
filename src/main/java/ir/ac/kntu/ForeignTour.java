@@ -9,7 +9,7 @@ public class ForeignTour extends Tour {
     private TourLeader tourLeader;
     private Date startingDate;
     private Date finishingDate;
-    private LinkedList<Attraction> attractions=new LinkedList<>();
+    private LinkedList<Attraction> attractions = new LinkedList<>();
 
     public String getFullName() {
         return fullName;
@@ -80,12 +80,13 @@ public class ForeignTour extends Tour {
     }
 
     public String customToString() {
-        String lastName=tourLeader.getLName();
+        String lastName = tourLeader.getLName();
         return "tour name='" + fullName + '\'' +
                 ", startingDate=" + startingDate +
                 ", finishingDate=" + finishingDate +
                 ", tour leader=" + lastName;
     }
 
-    ForeignTour(){}
+    ForeignTour() {
+    }
 }

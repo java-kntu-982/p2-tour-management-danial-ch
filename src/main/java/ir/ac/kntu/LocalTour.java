@@ -2,12 +2,12 @@ package ir.ac.kntu;
 
 import java.util.LinkedList;
 
-public class LocalTour extends Tour{
+public class LocalTour extends Tour {
     private String fullName;
     private TourLeader tourLeader;
     private Date startingDate;
     private Date finishingDate;
-    private LinkedList<Attraction> attractions=new LinkedList<>();
+    private LinkedList<Attraction> attractions = new LinkedList<>();
     private Location location;
 
     public Location getLocation() {
@@ -70,11 +70,13 @@ public class LocalTour extends Tour{
     }
 
     public String customToString() {
-        String lastName=tourLeader.getLName();
+        String lastName = tourLeader.getLName();
         return "tour name='" + fullName + '\'' +
                 ", startingDate=" + startingDate +
                 ", finishingDate=" + finishingDate +
                 ", tour leader=" + lastName;
     }
-    LocalTour(){}
+
+    LocalTour() {
+    }
 }
