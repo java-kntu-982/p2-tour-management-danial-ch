@@ -3,109 +3,98 @@ package ir.ac.kntu;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class Tour {
-    private String name;
-    private TravelMethod travelMethod;
-    private int time;
-    private int minAttendants;
-    private int maxAttendants;
-    private int price;
-    private Country country;
-    private LinkedList<Location> locations = new LinkedList<>();
+public class Tour extends TourType {
+    protected String fullName;
+    private City startingCity;
+    private City destination;
+    protected TourLeader tourLeader;
+    protected Date startingDate;
+    protected Date finishingDate;
+    protected LinkedList<Attraction> attractions = new LinkedList<>();
 
-    public Country getCountry() {
-
-        return country;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getName() {
-        return name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public City getStartingCity() {
+        return startingCity;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setStartingCity(City startingCity) {
+        this.startingCity = startingCity;
     }
 
-    public LinkedList<Location> getLocations() {
-        return locations;
+    public City getDestination() {
+        return destination;
     }
 
-    public void setLocations(LinkedList<Location> locations) {
-        this.locations = locations;
+    public void setDestination(City destination) {
+        this.destination = destination;
     }
 
-    public int getTime() {
-        return time;
+    public TourLeader getTourLeader() {
+        return tourLeader;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setTourLeader(TourLeader tourLeader) {
+        this.tourLeader = tourLeader;
     }
 
-    public int getMinAttendants() {
-        return minAttendants;
+    public Date getStartingDate() {
+        return startingDate;
     }
 
-    public void setMinAttendants(int minAttendants) {
-        this.minAttendants = minAttendants;
+    public void setStartingDate(Date startingDate) {
+        this.startingDate = startingDate;
     }
 
-    public int getMaxAttendants() {
-        return maxAttendants;
+    public Date getFinishingDate() {
+        return finishingDate;
     }
 
-    public void setMaxAttendants(int maxAttendants) {
-        this.maxAttendants = maxAttendants;
+    public void setFinishingDate(Date finishingDate) {
+        this.finishingDate = finishingDate;
     }
 
-    public int getPrice() {
-        return price;
+    public LinkedList<Attraction> getAttractions() {
+        return attractions;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public TravelMethod getTravelMethod() {
-        return travelMethod;
-    }
-
-    public void setTravelMethod(TravelMethod travelMethod) {
-        this.travelMethod = travelMethod;
+    public void setAttractions(LinkedList<Attraction> attractions) {
+        this.attractions = attractions;
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Tour tour = (Tour) o;
-        return time == tour.time &&
-                minAttendants == tour.minAttendants &&
-                maxAttendants == tour.maxAttendants &&
-                price == tour.price &&
-                Objects.equals(name, tour.name) &&
-                travelMethod == tour.travelMethod &&
-                Objects.equals(country, tour.country) &&
-                Objects.equals(locations, tour.locations);
+        return Objects.equals(fullName, tour.fullName) &&
+                Objects.equals(startingCity, tour.startingCity) &&
+                Objects.equals(destination, tour.destination) &&
+                Objects.equals(tourLeader, tour.tourLeader) &&
+                Objects.equals(startingDate, tour.startingDate) &&
+                Objects.equals(finishingDate, tour.finishingDate) &&
+                Objects.equals(attractions, tour.attractions);
     }
 
     public int hashCode() {
-        return Objects.hash(name, travelMethod, time, minAttendants, maxAttendants, price, country, locations);
+        return Objects.hash(fullName, startingCity, destination, tourLeader, startingDate, finishingDate, attractions);
     }
 
     public String toString() {
-        return name +
-                "{" +
-                "travelMethod=" + travelMethod +
-                ", country=" + country.getName() +
-                ", number of days=" + time +
-                ", minAttendants=" + minAttendants +
-                ", maxAttendants=" + maxAttendants +
-                ", price=" + price +
-                ", cities=" + locations +
+        return "Tour{" +
+                "fullName='" + fullName + '\'' +
+                ", tourLeader=" + tourLeader.getLName() +
+                ", startingDate=" + startingDate +
+                ", finishingDate=" + finishingDate +
                 '}';
     }
 

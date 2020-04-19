@@ -4,79 +4,60 @@ import java.util.Scanner;
 
 public class AttractionHandle {
 
-    public static void seeAllAttractions() {
+    public static void seeAllAttractions(Person person) {
         //ClearScreen.cls();
         for (int i = 0; i < Main.attractions.size(); i++) {
-            System.out.println((i + 1) + ")" + Main.attractions.get(i).toString());
+            System.out.println((i + 1) + ")" + Main.attractions.get(i).getName());
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void addAttraction() {
-        //ClearScreen.cls();
-        String name, city;
-        int choice, i;
+    public static void addAttractionBase(Attraction attraction) {
         Scanner input = new Scanner(System.in);
-        Attraction attraction = new Attraction();
+        String name;
+        int choice, i;
         System.out.println("Enter attraction's name");
         name = input.nextLine();
         System.out.println("Choose a city in witch attraction is in");
-        for (i = 0; i < Main.locations.size(); i++) {
-            System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
+        for (i = 0; i < Main.cities.size(); i++) {
+            System.out.println((i + 1) + ")" + Main.cities.get(i).getCityName());
         }
         while (true) {
             choice = input.nextInt() - 1;
-            if (choice > Main.locations.size()) {
+            if (choice > Main.cities.size()) {
                 System.out.println("Number is not valid please try again");
                 continue;
             }
             break;
         }
-        for (i = 0; i < Main.locations.size(); i++) {
+        for (i = 0; i < Main.cities.size(); i++) {
             if (choice == i) {
-                city = Main.locations.get(i).getCityName();
-                attraction.setCity(city);
+                Main.cities.get(i).getAttractions().add(attraction);
             }
         }
         attraction.setName(name);
-        Main.attractions.add(attraction);
-        Main.locations.get(i).getAttractions().add(attraction);
-        System.out.println("Attraction added successfully");
-        backToMenu();
     }
 
-    public static void editAnAttraction() {
+    public static void addAttraction(Person person) {
+        //ClearScreen.cls();
+        Attraction attraction = new Attraction();
+        addAttractionBase(attraction);
+        Main.attractions.add(attraction);
+        System.out.println("Attraction added successfully");
+        backToMenu(person);
+    }
+
+    public static void editAnAttraction(Person person) {
         //ClearScreen.cls();
         boolean flag = false;
-        String name, city, tempName;
+        String tempName;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter attraction's name");
         tempName = input.nextLine();
         for (int j = 0; j < Main.attractions.size(); j++) {
             if (Main.attractions.get(j).getName().equals(tempName)) {
                 Attraction attraction = Main.attractions.get(j);
-                int choice;
-                System.out.println("Enter attraction's new name");
-                name = input.nextLine();
-                System.out.println("Choose a new city in witch attraction is in");
-                for (int i = 0; i < Main.locations.size(); i++) {
-                    System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
-                }
-                while (true) {
-                    choice = input.nextInt() - 1;
-                    if (choice > Main.locations.size()) {
-                        System.out.println("Number is not valid please try again");
-                        continue;
-                    }
-                    break;
-                }
-                for (int i = 0; i < Main.locations.size(); i++) {
-                    if (choice == i) {
-                        city = Main.locations.get(i).getCityName();
-                        attraction.setCity(city);
-                    }
-                }
-                attraction.setName(name);
+                addAttractionBase(attraction);
                 System.out.println("Attraction edited successfully");
                 flag = true;
                 break;
@@ -85,10 +66,10 @@ public class AttractionHandle {
         if (!flag) {
             System.out.println("Attraction wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void deleteAnAttraction() {
+    public static void deleteAnAttraction(Person person) {
         //ClearScreen.cls();
         boolean flag = false;
         String tempName;
@@ -106,19 +87,19 @@ public class AttractionHandle {
         if (!flag) {
             System.out.println("Attraction wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void backToMenu() {
+    public static void backToMenu(Person person) {
         int answer;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to go to attraction menu");
         System.out.println("Enter 2 to go to main menu");
         answer = input.nextInt();
         if (answer == 1) {
-            Menu.attractionsMenu();
+            Menu.attractionsMenu(person);
         } else if (answer == 2) {
-            Menu.mainMenu();
+            Menu.mainMenu(person);
         }
     }
 }

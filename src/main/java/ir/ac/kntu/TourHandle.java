@@ -27,127 +27,72 @@ public class TourHandle {
         }
     }
 
-    public static void seeAllTourTypes() {
+    public static void seeAllTourTypes(Person person) {
         ////ClearScreen.cls();
-        Country iran = Main.countries.getFirst();
         for (int i = 0; i < Main.tours.size(); i++) {
-            System.out.println(Main.tours.get(i).getName());
+            System.out.println((i + 1) + ")" + Main.tours.get(i).getName());
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void seeAllTours() {
+    public static void seeAllTours(Person person) {
         ////ClearScreen.cls();
-        for (int i = 0; i < Main.foreignTours.size(); i++) {
-            System.out.println(Main.foreignTours.get(i).customToString());
+        for (int i = 0; i < Main.tours.size(); i++) {
+            System.out.println(Main.tours.get(i).toString());
         }
-        for (int i = 0; i < Main.localTours.size(); i++) {
-            System.out.println(Main.localTours.get(i).customToString());
-        }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static TourLeader chooseTourLeader(Tour tour, Date startingDate, Date finishingDate) {
-        TourLeader notFound = new TourLeader();
-        Country iran = Main.countries.getFirst();
-        TourLeader tourLeader = new TourLeader();
-        int tourLeaderChoice, startingChoice;
+    public static TourLeader chooseTourLeader(Date startingDate, Date finishingDate) {
+        int tourLeaderChoice;
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter 1 to choose tour's tour leader from available tour leaders");
-        System.out.println("Enter 2 to enter tour leader's name");
-        startingChoice = input.nextInt();
-        if (startingChoice == 1) {
-            int i;
-            System.out.println("Choose on of the tour leaders");
-            for (i = 0; i < Main.tourLeaders.size(); i++) {
-                if (Main.tourLeaders.get(i).getCurrentTour() == null) {
+        int i;
+        System.out.println("Choose on of the tour leaders");
+        for (i = 0; i < Main.tourLeaders.size(); i++) {
+            if (Main.tourLeaders.get(i).getCurrentTour() == null) {
+                System.out.println((i + 1) + ")" + Main.tourLeaders.get(i).getLName());
+            } else {
+                if (1 == compareDate(Main.tourLeaders.get(i).getCurrentTour().getStartingDate(), finishingDate)
+                        || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getCurrentTour().getFinishingDate())) {
                     System.out.println((i + 1) + ")" + Main.tourLeaders.get(i).getLName());
-                } else if (Main.tourLeaders.get(i).getCurrentTour().getCountry().equals(iran)) {
-                    if (1 == compareDate(Main.tourLeaders.get(i).getForeignTour().getStartingDate(), finishingDate)
-                            || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getForeignTour().getFinishingDate())) {
-                        System.out.println((i + 1) + ")" + Main.tourLeaders.get(i).getLName());
-                    }
-                } else {
-                    if (1 == compareDate(Main.tourLeaders.get(i).getLocalTour().getStartingDate(), finishingDate)
-                            || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getLocalTour().getFinishingDate())) {
-                        System.out.println((i + 1) + ")" + Main.tourLeaders.get(i).getLName());
-                    }
                 }
             }
-            while (true) {
-                tourLeaderChoice = input.nextInt() - 1;
-                if (tourLeaderChoice > i) {
-                    System.out.println("Number isn't valid");
-                    continue;
-                }
-                break;
+        }
+        while (true) {
+            tourLeaderChoice = input.nextInt() - 1;
+            if (tourLeaderChoice > i) {
+                System.out.println("Number isn't valid");
+                continue;
             }
-            for (i = 0; i < Main.tourLeaders.size(); i++) {
-                if (Main.tourLeaders.get(i).getCurrentTour() == null) {
+            break;
+        }
+        for (i = 0; i < Main.tourLeaders.size(); i++) {
+            if (Main.tourLeaders.get(i).getCurrentTour() == null) {
+                if (tourLeaderChoice == i) {
+                    return Main.tourLeaders.get(i);
+                }
+            } else {
+                if (1 == compareDate(Main.tourLeaders.get(i).getCurrentTour().getStartingDate(), finishingDate)
+                        || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getCurrentTour().getFinishingDate())) {
                     if (tourLeaderChoice == i) {
                         return Main.tourLeaders.get(i);
                     }
-                } else if (Main.tourLeaders.get(i).getCurrentTour().getCountry().equals(iran)) {
-                    if (1 == compareDate(Main.tourLeaders.get(i).getForeignTour().getStartingDate(), finishingDate)
-                            || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getForeignTour().getFinishingDate())) {
-                        if (tourLeaderChoice == i) {
-                            return Main.tourLeaders.get(i);
-                        }
-                    }
-                } else {
-                    if (1 == compareDate(Main.tourLeaders.get(i).getLocalTour().getStartingDate(), finishingDate)
-                            || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getLocalTour().getFinishingDate())) {
-                        if (tourLeaderChoice == i) {
-                            return Main.tourLeaders.get(i);
-                        }
-                    }
-                }
-            }
-        } else if (startingChoice == 2) {
-            boolean flagFound = false, flagAvailable = false;
-            String name;
-            System.out.println("Enter tour leader's last name");
-            name = input.nextLine();
-            for (int i = 0; i < Main.tourLeaders.size(); i++) {
-                if (Main.tourLeaders.get(i).getLName().equals(name)) {
-                    flagFound = true;
-                    if (Main.tourLeaders.get(i).getCurrentTour() == null
-                            || 1 == compareDate(Main.tourLeaders.get(i).getLocalTour().getStartingDate(), finishingDate)
-                            || 1 == compareDate(startingDate, Main.tourLeaders.get(i).getLocalTour().getFinishingDate())) {
-                        tourLeader = Main.tourLeaders.get(i);
-                        flagAvailable = true;
-                        break;
-                    }
-                }
-            }
-            if (!flagFound) {
-                System.out.println("Tour leader wasn't found");
-                return notFound;
-            } else {
-                if (flagAvailable) {
-                    System.out.println("Tour leader has been selected");
-                    return tourLeader;
-                } else {
-                    System.out.println("Tour leader is not available at this time pls change the tour time");
-                    return null;
                 }
             }
         }
-        return notFound;
+        return null;
     }
 
-    public static Tour addTourType() {
+    public static void addTourTypeBase(TourType tourType) {
         Country iran = Main.countries.getFirst();
-        ////ClearScreen.cls();
         Scanner input = new Scanner(System.in);
         Country country = new Country();
         int travelTypeChoice, time, price, minAttendants, maxAttendants, countryChoice, i;
         String name;
-        Tour tour = new Tour();
-        LinkedList<Location> locations = new LinkedList<>();
+        LinkedList<City> cities = new LinkedList<>();
         System.out.println("Enter tour's name");
         name = input.nextLine();
-        tour.setName(name);
+        tourType.setName(name);
         System.out.println("Choose tour's visiting country");
         for (i = 0; i < Main.countries.size(); i++) {
             System.out.println((i + 1) + ")" + Main.countries.get(i).getName());
@@ -163,15 +108,15 @@ public class TourHandle {
         for (i = 0; i < Main.countries.size(); i++) {
             if (countryChoice == i) {
                 country = Main.countries.get(i);
-                tour.setCountry(country);
+                tourType.setCountry(country);
             }
         }
         if (country.equals(iran)) {
-            Location city = new Location();
+            City city = new City();
             int cityChoice;
             System.out.println("Choose visiting city");
-            for (i = 0; i < Main.locations.size(); i++) {
-                System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
+            for (i = 0; i < Main.cities.size(); i++) {
+                System.out.println((i + 1) + ")" + Main.cities.get(i).getCityName());
             }
             while (true) {
                 cityChoice = input.nextInt() - 1;
@@ -181,194 +126,98 @@ public class TourHandle {
                 }
                 break;
             }
-            for (i = 0; i < Main.locations.size(); i++) {
+            for (i = 0; i < Main.cities.size(); i++) {
                 if (cityChoice == i) {
-                    city = Main.locations.get(i);
+                    city = Main.cities.get(i);
                 }
             }
-            locations.add(city);
-            tour.setLocations(locations);
+            cities.add(city);
         } else {
             while (true) {
                 int cityChoice;
                 System.out.println("Choose visiting cities in order of visit");
-                for (i = 0; i < Main.locations.size(); i++) {
-                    if (Main.locations.get(i).getCountry() == null || !Main.locations.get(i).getCountry().equals(iran)) {
-                        System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
-                    }
+                for (i = 0; i < Main.cities.size(); i++) {
+                    System.out.println((i + 1) + ")" + Main.cities.get(i).getCityName());
                 }
-                System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
+                System.out.println((i + 1) + ")Enter " + (i + 1) + " to finish");
                 cityChoice = input.nextInt();
-                if (cityChoice == i + 2) {
+                if (cityChoice == i + 1) {
                     break;
                 }
-                for (int j = 0; j < Main.locations.size(); j++) {
+                for (int j = 0; j < Main.cities.size(); j++) {
                     if (cityChoice == j) {
-                        locations.add(Main.locations.get(j));
+                        cities.add(Main.cities.get(j));
                     }
                 }
             }
-            tour.setLocations(locations);
         }
+        tourType.setCities(cities);
         System.out.println("Enter tour's number of days");
         time = input.nextInt();
-        tour.setTime(time);
+        tourType.setTime(time);
         System.out.println("Enter tour's price");
         price = input.nextInt();
-        tour.setPrice(price);
+        tourType.setPrice(price);
         System.out.println("Enter tour's minimum attendants");
         minAttendants = input.nextInt();
-        tour.setMinAttendants(minAttendants);
+        tourType.setMinAttendants(minAttendants);
         System.out.println("Enter tour's maximum attendants");
         maxAttendants = input.nextInt();
-        tour.setMaxAttendants(maxAttendants);
+        tourType.setMaxAttendants(maxAttendants);
         System.out.println("if tour is an air trip enter 1 and if it's an ground trip enter 2");
         travelTypeChoice = input.nextInt();
         if (travelTypeChoice == 1) {
-            tour.setTravelMethod(TravelMethod.airTrip);
+            tourType.setTravelMethod(TravelMethod.airTrip);
         } else if (travelTypeChoice == 2) {
-            tour.setTravelMethod(TravelMethod.roadTrip);
+            tourType.setTravelMethod(TravelMethod.roadTrip);
         }
-        return tour;
     }
 
-    public static void addTourTypeMain() {
-        Tour tour = addTourType();
-        Main.tours.add(tour);
+    public static void addTourType(Person person) {
+        ////ClearScreen.cls();
+        TourType tourType = new TourType();
+        addTourTypeBase(tourType);
+        Main.tourTypes.add(tourType);
         System.out.println("Tour type added successfully");
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void editTourType() {
-        Country iran = Main.countries.getFirst();
+    public static void editTourType(Person person) {
         ////ClearScreen.cls();
         Scanner input = new Scanner(System.in);
-        Country country = new Country();
-        int travelTypeChoice, time, price, minAttendants, maxAttendants, countryChoice, i;
-        boolean flag = true, find = false;
+        boolean flag = true;
         String name;
-        Tour tour = new Tour();
-        LinkedList<Location> locations = new LinkedList<>();
         System.out.println("Enter tour's name to edit it");
         name = input.nextLine();
-        for (i = 0; i < Main.tours.size(); i++) {
-            if (Main.tours.get(i).getName().equals(name)) {
-                tour = Main.tours.get(i);
-                find = true;
+        for (int i = 0; i < Main.tourTypes.size(); i++) {
+            if (Main.tourTypes.get(i).getName().equals(name)) {
+                addTourTypeBase(Main.tourTypes.get(i));
+                flag = true;
+                System.out.println("Tour type edited successfully");
                 break;
+            } else {
+                flag = false;
             }
         }
-        if (find) {
-            System.out.println("Choose tour's visiting country");
-            for (i = 0; i < Main.countries.size(); i++) {
-                System.out.println((i + 1) + Main.countries.get(i).getName());
-            }
-            while (true) {
-                countryChoice = input.nextInt() - 1;
-                if (countryChoice > i) {
-                    System.out.println("Number isn't valid");
-                    continue;
-                }
-                break;
-            }
-            for (i = 0; i < Main.countries.size(); i++) {
-                if (countryChoice == i) {
-                    country = Main.countries.get(i);
-                    tour.setCountry(country);
-                }
-            }
-            if (country.equals(iran)) {
-                Location city = new Location();
-                int cityChoice;
-                System.out.println("Choose visiting city");
-                for (i = 0; i < Main.locations.size(); i++) {
-                    System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
-                }
-                while (true) {
-                    cityChoice = input.nextInt() - 1;
-                    if (cityChoice > i) {
-                        System.out.println("Number isn't valid");
-                        continue;
-                    }
-                    break;
-                }
-                for (i = 0; i < Main.locations.size(); i++) {
-                    if (cityChoice == i) {
-                        city = Main.locations.get(i);
-                    }
-                }
-                locations.add(city);
-                tour.setLocations(locations);
-            } else {
-                while (true) {
-                    int cityChoice;
-                    System.out.println("Choose visiting cities in order of visit");
-                    for (i = 0; i < Main.locations.size(); i++) {
-                        System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
-                    }
-                    System.out.println((i + 2) + "Enter" + (i + 2) + "to finish");
-                    cityChoice = input.nextInt() - 1;
-                    if (cityChoice == i + 2) {
-                        break;
-                    }
-                    for (int j = 0; j < Main.locations.size(); j++) {
-                        if (cityChoice == j) {
-                            locations.add(Main.locations.get(j));
-                        }
-                    }
-                }
-                tour.setLocations(locations);
-            }
-            System.out.println("Enter tour's number of days");
-            time = input.nextInt();
-            tour.setTime(time);
-            System.out.println("Enter tour's price");
-            price = input.nextInt();
-            tour.setPrice(price);
-            System.out.println("Enter tour's minimum attendants");
-            minAttendants = input.nextInt();
-            tour.setMinAttendants(minAttendants);
-            System.out.println("Enter tour's maximum attendants");
-            maxAttendants = input.nextInt();
-            tour.setMaxAttendants(maxAttendants);
-            System.out.println("if tour is an air trip enter 1 and if it's an ground trip enter 2");
-            travelTypeChoice = input.nextInt();
-            if (travelTypeChoice == 1) {
-                tour.setTravelMethod(TravelMethod.airTrip);
-            } else if (travelTypeChoice == 2) {
-                tour.setTravelMethod(TravelMethod.roadTrip);
-            }
-            for (i = 0; i < Main.tours.size(); i++) {
-                if (Main.tours.get(i).equals(tour)) {
-                    System.out.println("Tour already exists");
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag) {
-                System.out.println("Tour type edited successfully");
-            }
-        } else {
+
+        if (!flag) {
             System.out.println("Tour wasn't found");
         }
-
+        backToMenu(person);
     }
 
-    public static void addTourMain() {
-        TourLeader notFound = new TourLeader();
+    public static void addTourBase(Tour tour) {
         int startingDay, startingMonth, startingYear, finishingDay, finishingMonth, finishingYear;
+        String fullName;
         Date startingDate, finishingDate;
-        Country iran = Main.countries.getFirst();
-        ForeignTour foreignTour = new ForeignTour();
-        LocalTour localTour = new LocalTour();
-        Tour tour = new Tour();
+        TourType tourType = new TourType();
         TourLeader tourLeader;
-        ////ClearScreen.cls();
+        LinkedList<Attraction> attractions = new LinkedList<>();
         Scanner input = new Scanner(System.in);
-        int mainChoice, i, tourType;
+        int mainChoice, i;
         System.out.println("Choose one of the tour types");
-        for (i = 0; i < Main.tours.size(); i++) {
-            System.out.println((i + 1) + ")" + Main.tours.get(i).toString());
+        for (i = 0; i < Main.tourTypes.size(); i++) {
+            System.out.println((i + 1) + ")" + Main.tourTypes.get(i).toString());
         }
         while (true) {
             mainChoice = input.nextInt() - 1;
@@ -378,31 +227,19 @@ public class TourHandle {
             }
             break;
         }
-        for (i = 0; i < Main.tours.size(); i++) {
+        for (i = 0; i < Main.tourTypes.size(); i++) {
             if (mainChoice == i) {
-                tour = Main.tours.get(i);
+                tourType = Main.tourTypes.get(i);
                 break;
             }
         }
-        if (Main.tours.get(i).getCountry().equals(iran)) {
-            localTour.setCountry(iran);
-            localTour.setMinAttendants(tour.getMinAttendants());
-            localTour.setMaxAttendants(tour.getMaxAttendants());
-            localTour.setLocations(tour.getLocations());
-            localTour.setPrice(tour.getPrice());
-            localTour.setTime(tour.getTime());
-            localTour.setTravelMethod(tour.getTravelMethod());
-            tourType = 1;
-        } else {
-            foreignTour.setCountry(tour.getCountry());
-            foreignTour.setMinAttendants(tour.getMinAttendants());
-            foreignTour.setMaxAttendants(tour.getMaxAttendants());
-            foreignTour.setLocations(tour.getLocations());
-            foreignTour.setPrice(tour.getPrice());
-            foreignTour.setTime(tour.getTime());
-            foreignTour.setTravelMethod(tour.getTravelMethod());
-            tourType = 2;
-        }
+        tour.setCountry(tourType.getCountry());
+        tour.setMinAttendants(tourType.getMinAttendants());
+        tour.setMaxAttendants(tourType.getMaxAttendants());
+        tour.setCities(tourType.getCities());
+        tour.setPrice(tourType.getPrice());
+        tour.setTime(tourType.getTime());
+        tour.setTravelMethod(tourType.getTravelMethod());
         while (true) {
             System.out.println("Enter tour's starting day");
             startingDay = input.nextInt();
@@ -418,31 +255,21 @@ public class TourHandle {
             System.out.println("Enter tour's finishing year");
             finishingYear = input.nextInt();
             finishingDate = new Date(finishingYear, finishingMonth, finishingDay);
-            tourLeader = chooseTourLeader(tour, startingDate, finishingDate);
-            while (tourLeader.equals(notFound)) {
-                tourLeader = chooseTourLeader(tour, startingDate, finishingDate);
-            }
+            tourLeader = chooseTourLeader(startingDate, finishingDate);
             if (tourLeader == null) {
                 System.out.println("Change the time to see the tour leader you want");
                 continue;
             }
             break;
         }
-        LinkedList<Attraction> attractions = new LinkedList<>();
-        if (tourType == 2) {
-            System.out.println();
-            foreignTour.setStartingCity(tour.getLocations().getFirst());
-            foreignTour.setDestination(tour.getLocations().getLast());
-            foreignTour.setStartingDate(startingDate);
-            foreignTour.setFinishingDate(finishingDate);
-            String fullName = foreignTour.getCountry().getName() + " " + (Main.foreignTours.size() + 1);
-            foreignTour.setFullName(fullName);
-            for (i = 0; i < foreignTour.getTime(); i++) {
-                ////ClearScreen.cls();
+        tour.setStartingDate(startingDate);
+        tour.setFinishingDate(finishingDate);
+        if (tour.getCountry().getName().equals("iran")) {
+            for (i = 0; i < tour.getTime(); i++) {
                 int attractionChoice, j;
                 System.out.println("Choose day " + (i + 1) + " attraction");
-                for (j = 0; j < foreignTour.getLocations().get(i).getAttractions().size(); j++) {
-                    System.out.println((j + 1) + ")" + foreignTour.getLocations().get(i).getAttractions().get(j).getName());
+                for (j = 0; j < tour.getCities().get(0).getAttractions().size(); j++) {
+                    System.out.println((j + 1) + ")" + tour.getCities().get(i).getAttractions().get(j).getName());
                 }
                 while (true) {
                     attractionChoice = input.nextInt() - 1;
@@ -452,27 +279,21 @@ public class TourHandle {
                     }
                     break;
                 }
-                for (j = 0; j < foreignTour.getLocations().get(i).getAttractions().size(); j++) {
+                for (j = 0; j < tour.getCities().get(i).getAttractions().size(); j++) {
                     if (attractionChoice == j) {
-                        attractions.add(foreignTour.getLocations().get(i).getAttractions().get(j));
+                        attractions.add(tour.getCities().get(i).getAttractions().get(j));
                     }
                 }
             }
-            Main.foreignTours.add(foreignTour);
-        }
-        //khate payin nokte dare
-        else {
-            localTour.setLocation(tour.getLocations().getFirst());
-            localTour.setStartingDate(startingDate);
-            localTour.setFinishingDate(finishingDate);
-            String fullName = localTour.getLocation().getCityName() + " " + (Main.localTours.size() + 1);
-            localTour.setFullName(fullName);
-            for (i = 0; i < localTour.getTime(); i++) {
-                ////ClearScreen.cls();
+            fullName = tour.getCities().getFirst().getCityName() + " " + (Main.tours.size() + 1);
+        } else {
+            tour.setStartingCity(tour.getCities().getFirst());
+            tour.setDestination(tour.getCities().getLast());
+            for (i = 0; i < tour.getTime(); i++) {
                 int attractionChoice, j;
                 System.out.println("Choose day " + (i + 1) + " attraction");
-                for (j = 0; j < localTour.getLocation().getAttractions().size(); j++) {
-                    System.out.println((j + 1) + ")" + localTour.getLocation().getAttractions().get(j).getName());
+                for (j = 0; j < tour.getCities().get(i).getAttractions().size(); j++) {
+                    System.out.println((j + 1) + ")" + tour.getCities().get(i).getAttractions().get(j).getName());
                 }
                 while (true) {
                     attractionChoice = input.nextInt() - 1;
@@ -482,161 +303,60 @@ public class TourHandle {
                     }
                     break;
                 }
-                for (j = 0; j < localTour.getLocation().getAttractions().size(); j++) {
+                for (j = 0; j < tour.getCities().get(i).getAttractions().size(); j++) {
                     if (attractionChoice == j) {
-                        attractions.add(localTour.getLocation().getAttractions().get(j));
+                        attractions.add(tour.getCities().get(i).getAttractions().get(j));
                     }
                 }
             }
-            Main.localTours.add(localTour);
+            fullName = tour.getCountry().getName() + " " + (Main.tours.size() + 1);
         }
-        System.out.println("Tour Added Successfully");
-        backToMenu();
+        tour.setFullName(fullName);
+        tour.setAttractions(attractions);
     }
 
-    public static void editTour() {
-        TourLeader notFound = new TourLeader();
-        int startingDay, startingMonth, startingYear, finishingDay, finishingMonth, finishingYear;
-        boolean find = false;
-        String fullName;
-        Date startingDate, finishingDate;
-        Country iran = Main.countries.getFirst();
-        ForeignTour foreignTour = new ForeignTour();
-        LocalTour localTour = new LocalTour();
-        Tour tour = new Tour();
-        TourLeader tourLeader;
+    public static void addTour(Person person) {
         ////ClearScreen.cls();
+        Tour tour = new Tour();
+        addTourBase(tour);
+        Main.tours.add(tour);
+        System.out.println("Tour Added Successfully");
+        backToMenu(person);
+    }
+
+    public static void editTour(Person person) {
+        //ClearScreen.cls();
         Scanner input = new Scanner(System.in);
-        int mainChoice, i, tourType;
-        System.out.println("Enter 1 to choose a foreign tour or 2 to choose a local tour");
-        tourType = input.nextInt();
+        String fullName;
+        boolean flag = false;
         System.out.println("Enter tour's full name to edit it");
         fullName = input.nextLine();
-        if (tourType == 1) {
-            for (i = 0; i < Main.foreignTours.size(); i++) {
-                if (Main.foreignTours.get(i).getFullName().equals(fullName)) {
-                    foreignTour = Main.foreignTours.get(i);
-                    find = true;
-                    break;
-                }
-            }
-        } else if (tourType == 2) {
-            for (i = 0; i < Main.localTours.size(); i++) {
-                if (Main.localTours.get(i).getFullName().equals(fullName)) {
-                    localTour = Main.localTours.get(i);
-                    find = true;
-                    break;
-                }
-            }
-        }
-        if (find) {
-            while (true) {
-                System.out.println("Enter tour's starting day");
-                startingDay = input.nextInt();
-                System.out.println("Enter tour's starting month");
-                startingMonth = input.nextInt();
-                System.out.println("Enter tour's starting year");
-                startingYear = input.nextInt();
-                startingDate = new Date(startingYear, startingMonth, startingDay);
-                System.out.println("Enter tour's finishing day");
-                finishingDay = input.nextInt();
-                System.out.println("Enter tour's finishing month");
-                finishingMonth = input.nextInt();
-                System.out.println("Enter tour's finishing year");
-                finishingYear = input.nextInt();
-                finishingDate = new Date(finishingYear, finishingMonth, finishingDay);
-                tourLeader = chooseTourLeader(tour, startingDate, finishingDate);
-                while (tourLeader.equals(notFound)) {
-                    tourLeader = chooseTourLeader(tour, startingDate, finishingDate);
-                }
-                if (tourLeader == null) {
-                    System.out.println("Change the time to see the tour leader you want");
-                    continue;
-                }
+        for (int i = 0; i < Main.tours.size(); i++) {
+            if (Main.tours.get(i).getFullName().equals(fullName)) {
+                addTourBase(Main.tours.get(i));
+                System.out.println("Tour edited Successfully");
+                flag = true;
                 break;
             }
-            LinkedList<Attraction> attractions = new LinkedList<>();
-            if (tourType == 1) {
-                System.out.println();
-                foreignTour.setStartingCity(tour.getLocations().getFirst());
-                foreignTour.setDestination(tour.getLocations().getLast());
-                foreignTour.setStartingDate(startingDate);
-                foreignTour.setFinishingDate(finishingDate);
-                for (i = 0; i < foreignTour.getTime(); i++) {
-                    ////ClearScreen.cls();
-                    int attractionChoice, j;
-                    System.out.println("Choose day " + (i + 1) + " attraction");
-                    for (j = 0; j < foreignTour.getLocations().get(i).getAttractions().size(); j++) {
-                        System.out.println((j + 1) + ")" + foreignTour.getLocations().get(i).getAttractions().get(j).getName());
-                    }
-                    while (true) {
-                        attractionChoice = input.nextInt() - 1;
-                        if (attractionChoice > j) {
-                            System.out.println("Number isn't valid");
-                            continue;
-                        }
-                        break;
-                    }
-                    for (j = 0; j < foreignTour.getLocations().get(i).getAttractions().size(); j++) {
-                        if (attractionChoice == j) {
-                            attractions.add(foreignTour.getLocations().get(i).getAttractions().get(j));
-                        }
-                    }
-                }
-            } else if (tourType == 2) {
-                localTour.setLocation(tour.getLocations().getFirst());
-                localTour.setStartingDate(startingDate);
-                localTour.setFinishingDate(finishingDate);
-                for (i = 0; i < localTour.getTime(); i++) {
-                    ////ClearScreen.cls();
-                    int attractionChoice, j;
-                    System.out.println("Choose day " + (i + 1) + " attraction");
-                    for (j = 0; j < localTour.getLocation().getAttractions().size(); j++) {
-                        System.out.println((j + 1) + ")" + localTour.getLocation().getAttractions().get(j).getName());
-                    }
-                    while (true) {
-                        attractionChoice = input.nextInt() - 1;
-                        if (attractionChoice > j) {
-                            System.out.println("Number isn't valid");
-                            continue;
-                        }
-                        break;
-                    }
-                    for (j = 0; j < localTour.getLocation().getAttractions().size(); j++) {
-                        if (attractionChoice == j) {
-                            attractions.add(localTour.getLocation().getAttractions().get(j));
-                        }
-                    }
-                }
-            }
-            System.out.println("Tour edited Successfully");
-        } else {
+        }
+        if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void deleteTour() {
+    public static void deleteTour(Person person) {
         ////ClearScreen.cls();
         Scanner input = new Scanner(System.in);
         String fullName;
         boolean flag = false;
         System.out.println("Enter tour's full name");
         fullName = input.nextLine();
-        for (int i = 0; i < Main.foreignTours.size(); i++) {
-            if (Main.foreignTours.get(i).getFullName().equals(fullName)) {
-                Main.foreignTours.remove(i);
+        for (int i = 0; i < Main.tours.size(); i++) {
+            if (Main.tours.get(i).getFullName().equals(fullName)) {
+                Main.tours.remove(i);
                 flag = true;
                 break;
-            }
-        }
-        if (!flag) {
-            for (int i = 0; i < Main.localTours.size(); i++) {
-                if (Main.localTours.get(i).getFullName().equals(fullName)) {
-                    Main.localTours.remove(i);
-                    flag = true;
-                    break;
-                }
             }
         }
         if (flag) {
@@ -644,10 +364,10 @@ public class TourHandle {
         } else {
             System.out.println("Tour wasn't Found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchTourType() {
+    public static void searchTourType(Person person) {
         int answer;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to search based on number of days");
@@ -658,51 +378,51 @@ public class TourHandle {
         answer = input.nextInt();
         switch (answer) {
             case 1:
-                searchInNumberOfDays();
+                searchInNumberOfDays(person);
                 break;
             case 2:
-                searchInVisitingCities();
+                searchInVisitingCities(person);
                 break;
             case 3:
-                searchInVisitingCountry();
+                searchInVisitingCountry(person);
                 break;
             case 4:
-                searchInMinAndMaxCapacity();
+                searchInMinAndMaxCapacity(person);
                 break;
             case 5:
-                searchInPrice();
+                searchInPrice(person);
                 break;
         }
     }
 
-    public static void searchInNumberOfDays() {
+    public static void searchInNumberOfDays(Person person) {
         Scanner input = new Scanner(System.in);
         int number;
         boolean flag = false;
         System.out.println("Enter tour's number of days");
         number = input.nextInt();
-        for (int i = 0; i < Main.tours.size(); i++) {
-            if (Main.tours.get(i).getTime() == number) {
-                System.out.println(Main.tours.get(i).toString());
+        for (int i = 0; i < Main.tourTypes.size(); i++) {
+            if (Main.tourTypes.get(i).getTime() == number) {
+                System.out.println(Main.tourTypes.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInVisitingCities() {
+    public static void searchInVisitingCities(Person person) {
         Scanner input = new Scanner(System.in);
         String cityName;
         boolean flag = false;
         System.out.println("Enter a city that you are looking for");
         cityName = input.nextLine();
-        for (int i = 0; i < Main.tours.size(); i++) {
-            for (int j = 0; j < Main.tours.get(i).getLocations().size(); j++) {
-                if (Main.tours.get(i).getLocations().get(j).getCityName().equals(cityName)) {
-                    System.out.println(Main.tours.get(i).toString());
+        for (int i = 0; i < Main.tourTypes.size(); i++) {
+            for (int j = 0; j < Main.tourTypes.get(i).getCities().size(); j++) {
+                if (Main.tourTypes.get(i).getCities().get(j).getCityName().equals(cityName)) {
+                    System.out.println(Main.tourTypes.get(i).toString());
                     flag = true;
                 }
             }
@@ -710,28 +430,28 @@ public class TourHandle {
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInVisitingCountry() {
+    public static void searchInVisitingCountry(Person person) {
         Scanner input = new Scanner(System.in);
         String country;
         boolean flag = false;
         System.out.println("Enter tour's visiting country");
         country = input.nextLine();
-        for (int i = 0; i < Main.tours.size(); i++) {
-            if (Main.tours.get(i).getCountry().getName().equals(country)) {
-                System.out.println(Main.tours.get(i).toString());
+        for (int i = 0; i < Main.tourTypes.size(); i++) {
+            if (Main.tourTypes.get(i).getCountry().getName().equals(country)) {
+                System.out.println(Main.tourTypes.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInMinAndMaxCapacity() {
+    public static void searchInMinAndMaxCapacity(Person person) {
         Scanner input = new Scanner(System.in);
         int minAttendants, maxAttendants;
         boolean flag = false;
@@ -739,19 +459,19 @@ public class TourHandle {
         minAttendants = input.nextInt();
         System.out.println("Enter tour's maximum attendants");
         maxAttendants = input.nextInt();
-        for (int i = 0; i < Main.tours.size(); i++) {
-            if (Main.tours.get(i).getMinAttendants() >= minAttendants && Main.tours.get(i).getMaxAttendants() <= maxAttendants) {
-                System.out.println(Main.tours.get(i).toString());
+        for (int i = 0; i < Main.tourTypes.size(); i++) {
+            if (Main.tourTypes.get(i).getMinAttendants() >= minAttendants && Main.tourTypes.get(i).getMaxAttendants() <= maxAttendants) {
+                System.out.println(Main.tourTypes.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInPrice() {
+    public static void searchInPrice(Person person) {
         Scanner input = new Scanner(System.in);
         boolean flag = false;
         int price, choice, secondPrice;
@@ -764,9 +484,9 @@ public class TourHandle {
             case 1:
                 System.out.println("Enter a price");
                 price = input.nextInt();
-                for (int i = 0; i < Main.tours.size(); i++) {
-                    if (Main.tours.get(i).getPrice() == price) {
-                        System.out.println(Main.tours.get(i).toString());
+                for (int i = 0; i < Main.tourTypes.size(); i++) {
+                    if (Main.tourTypes.get(i).getPrice() == price) {
+                        System.out.println(Main.tourTypes.get(i).toString());
                         flag = true;
                     }
                 }
@@ -774,9 +494,9 @@ public class TourHandle {
             case 2:
                 System.out.println("Enter minimum price");
                 price = input.nextInt();
-                for (int i = 0; i < Main.tours.size(); i++) {
-                    if (Main.tours.get(i).getPrice() >= price) {
-                        System.out.println(Main.tours.get(i).toString());
+                for (int i = 0; i < Main.tourTypes.size(); i++) {
+                    if (Main.tourTypes.get(i).getPrice() >= price) {
+                        System.out.println(Main.tourTypes.get(i).toString());
                         flag = true;
                     }
                 }
@@ -784,9 +504,9 @@ public class TourHandle {
             case 3:
                 System.out.println("Enter maximum price");
                 price = input.nextInt();
-                for (int i = 0; i < Main.tours.size(); i++) {
-                    if (Main.tours.get(i).getPrice() <= price) {
-                        System.out.println(Main.tours.get(i).toString());
+                for (int i = 0; i < Main.tourTypes.size(); i++) {
+                    if (Main.tourTypes.get(i).getPrice() <= price) {
+                        System.out.println(Main.tourTypes.get(i).toString());
                         flag = true;
                     }
                 }
@@ -796,9 +516,9 @@ public class TourHandle {
                 price = input.nextInt();
                 System.out.println("Enter maximum price");
                 secondPrice = input.nextInt();
-                for (int i = 0; i < Main.tours.size(); i++) {
-                    if (Main.tours.get(i).getPrice() >= price && Main.tours.get(i).getPrice() <= secondPrice) {
-                        System.out.println(Main.tours.get(i).toString());
+                for (int i = 0; i < Main.tourTypes.size(); i++) {
+                    if (Main.tourTypes.get(i).getPrice() >= price && Main.tourTypes.get(i).getPrice() <= secondPrice) {
+                        System.out.println(Main.tourTypes.get(i).toString());
                         flag = true;
                     }
                 }
@@ -807,10 +527,10 @@ public class TourHandle {
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInTours() {
+    public static void searchInTours(Person person) {
         int answer;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to search based on tour's tour leader");
@@ -819,58 +539,48 @@ public class TourHandle {
         System.out.println("Enter 4 to search based on visiting city");
         System.out.println("Enter 5 to search based on visiting country");
         System.out.println("Enter 6 to search based on minimum and maximum capacity");
-        System.out.println("Enter 7 to search based on price");
         answer = input.nextInt();
         switch (answer) {
             case 1:
-                searchInTourLeader();
+                searchInTourLeader(person);
                 break;
             case 2:
-                searchInStartingAndFinishingDate();
+                searchInStartingAndFinishingDate(person);
                 break;
             case 3:
-                searchInNumberOfDaysTour();
+                searchInNumberOfDaysTour(person);
                 break;
             case 4:
-                searchInVisitingCityTour();
+                searchInVisitingCityTour(person);
                 break;
             case 5:
-                searchInVisitingCountryTour();
+                searchInVisitingCountryTour(person);
                 break;
             case 6:
-                searchInMinAndMaxCapacityTour();
-                break;
-            case 7:
-                searchInPriceTour();
+                searchInMinAndMaxCapacityTour(person);
                 break;
         }
     }
 
-    public static void searchInTourLeader() {
+    public static void searchInTourLeader(Person person) {
         Scanner input = new Scanner(System.in);
         String name;
         boolean flag = false;
-        System.out.println("Enter tour leader's name");
+        System.out.println("Enter tour leader's last name");
         name = input.nextLine();
-        for (int i = 0; i < Main.foreignTours.size(); i++) {
-            if (Main.foreignTours.get(i).getFullName().equals(name)) {
-                System.out.println(Main.foreignTours.get(i).toString());
-                flag = true;
-            }
-        }
-        for (int i = 0; i < Main.localTours.size(); i++) {
-            if (Main.localTours.get(i).getFullName().equals(name)) {
-                System.out.println(Main.localTours.get(i).toString());
+        for (int i = 0; i < Main.tours.size(); i++) {
+            if (Main.tours.get(i).getTourLeader().getLName().equals(name)) {
+                System.out.println(Main.tours.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInStartingAndFinishingDate() {
+    public static void searchInStartingAndFinishingDate(Person person) {
         Scanner input = new Scanner(System.in);
         int choice, startingDay, startingMonth, startingYear, finishingDay, finishingMonth, finishingYear;
         Date startingDate, finishingDate;
@@ -888,15 +598,9 @@ public class TourHandle {
                 System.out.println("Enter the year");
                 startingYear = input.nextInt();
                 startingDate = new Date(startingYear, startingMonth, startingDay);
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (compareDate(Main.foreignTours.get(i).getStartingDate(), startingDate) >= 0) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (compareDate(Main.localTours.get(i).getStartingDate(), startingDate) >= 0) {
-                        System.out.println(Main.localTours.get(i).toString());
+                for (int i = 0; i < Main.tours.size(); i++) {
+                    if (compareDate(Main.tours.get(i).getStartingDate(), startingDate) >= 0) {
+                        System.out.println(Main.tours.get(i).toString());
                         flag = true;
                     }
                 }
@@ -909,15 +613,9 @@ public class TourHandle {
                 System.out.println("Enter the year");
                 finishingYear = input.nextInt();
                 finishingDate = new Date(finishingYear, finishingMonth, finishingDay);
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (compareDate(Main.foreignTours.get(i).getFinishingDate(), finishingDate) <= 0) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (compareDate(Main.localTours.get(i).getFinishingDate(), finishingDate) <= 0) {
-                        System.out.println(Main.localTours.get(i).toString());
+                for (int i = 0; i < Main.tours.size(); i++) {
+                    if (compareDate(Main.tours.get(i).getFinishingDate(), finishingDate) <= 0) {
+                        System.out.println(Main.tours.get(i).toString());
                         flag = true;
                     }
                 }
@@ -937,15 +635,9 @@ public class TourHandle {
                 System.out.println("Enter the year");
                 finishingYear = input.nextInt();
                 finishingDate = new Date(finishingYear, finishingMonth, finishingDay);
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (compareDate(Main.foreignTours.get(i).getFinishingDate(), finishingDate) <= 0 && compareDate(Main.foreignTours.get(i).getStartingDate(), startingDate) >= 0) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (compareDate(Main.localTours.get(i).getFinishingDate(), finishingDate) <= 0 && compareDate(Main.localTours.get(i).getStartingDate(), startingDate) >= 0) {
-                        System.out.println(Main.localTours.get(i).toString());
+                for (int i = 0; i < Main.tours.size(); i++) {
+                    if (compareDate(Main.tours.get(i).getFinishingDate(), finishingDate) <= 0 && compareDate(Main.tours.get(i).getStartingDate(), startingDate) >= 0) {
+                        System.out.println(Main.tours.get(i).toString());
                         flag = true;
                     }
                 }
@@ -954,85 +646,66 @@ public class TourHandle {
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInNumberOfDaysTour() {
+    public static void searchInNumberOfDaysTour(Person person) {
         Scanner input = new Scanner(System.in);
         int number;
         boolean flag = false;
         System.out.println("Enter tour's number of days");
         number = input.nextInt();
-        for (int i = 0; i < Main.foreignTours.size(); i++) {
-            if (Main.foreignTours.get(i).getTime() == number) {
-                System.out.println(Main.foreignTours.get(i).toString());
-                flag = true;
-            }
-        }
-        for (int i = 0; i < Main.localTours.size(); i++) {
-            if (Main.localTours.get(i).getTime() == number) {
-                System.out.println(Main.localTours.get(i).toString());
+        for (int i = 0; i < Main.tours.size(); i++) {
+            if (Main.tours.get(i).getTime() == number) {
+                System.out.println(Main.tours.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInVisitingCityTour() {
+    public static void searchInVisitingCityTour(Person person) {
         Scanner input = new Scanner(System.in);
         String cityName;
         boolean flag = false;
         System.out.println("Enter a city that you are looking for");
         cityName = input.nextLine();
-        for (int i = 0; i < Main.foreignTours.size(); i++) {
-            for (int j = 0; j < Main.foreignTours.get(i).getLocations().size(); j++) {
-                if (Main.foreignTours.get(i).getLocations().get(j).getCityName().equals(cityName)) {
-                    System.out.println(Main.foreignTours.get(i).toString());
+        for (int i = 0; i < Main.tours.size(); i++) {
+            for (int j = 0; j < Main.tours.get(i).getCities().size(); j++) {
+                if (Main.tours.get(i).getCities().get(j).getCityName().equals(cityName)) {
+                    System.out.println(Main.tours.get(i).toString());
                     flag = true;
                 }
             }
         }
-        for (int i = 0; i < Main.localTours.size(); i++) {
-            if (Main.localTours.get(i).getLocation().getCityName().equals(cityName)) {
-                System.out.println(Main.localTours.get(i).toString());
+        if (!flag) {
+            System.out.println("Tour wasn't found");
+        }
+        backToMenu(person);
+    }
+
+    public static void searchInVisitingCountryTour(Person person) {
+        Scanner input = new Scanner(System.in);
+        String country;
+        boolean flag = false;
+        System.out.println("Enter tour's visiting country");
+        country = input.nextLine();
+        for (int i = 0; i < Main.tours.size(); i++) {
+            if (Main.tours.get(i).getCountry().getName().equals(country)) {
+                System.out.println(Main.tours.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInVisitingCountryTour() {
-        Scanner input = new Scanner(System.in);
-        String country;
-        boolean flag = false;
-        System.out.println("Enter tour's visiting country");
-        country = input.nextLine();
-        if (country.equals("iran") || country.equals("Iran") || country.equals("IRAN")) {
-            flag = true;
-            for (int i = 0; i < Main.localTours.size(); i++) {
-                System.out.println(Main.localTours.get(i).toString());
-            }
-        } else {
-            for (int i = 0; i < Main.foreignTours.size(); i++) {
-                if (Main.foreignTours.get(i).getCountry().getName().equals(country)) {
-                    System.out.println(Main.foreignTours.get(i).toString());
-                    flag = true;
-                }
-            }
-        }
-        if (!flag) {
-            System.out.println("Tour wasn't found");
-        }
-        backToMenu();
-    }
-
-    public static void searchInMinAndMaxCapacityTour() {
+    public static void searchInMinAndMaxCapacityTour(Person person) {
         Scanner input = new Scanner(System.in);
         int minAttendants, maxAttendants;
         boolean flag = false;
@@ -1040,117 +713,28 @@ public class TourHandle {
         minAttendants = input.nextInt();
         System.out.println("Enter tour's maximum attendants");
         maxAttendants = input.nextInt();
-        for (int i = 0; i < Main.foreignTours.size(); i++) {
-            if (Main.foreignTours.get(i).getMinAttendants() >= minAttendants && Main.foreignTours.get(i).getMaxAttendants() <= maxAttendants) {
-                System.out.println(Main.foreignTours.get(i).toString());
-                flag = true;
-            }
-        }
-        for (int i = 0; i < Main.localTours.size(); i++) {
-            if (Main.localTours.get(i).getMinAttendants() >= minAttendants && Main.localTours.get(i).getMaxAttendants() <= maxAttendants) {
-                System.out.println(Main.localTours.get(i).toString());
+        for (int i = 0; i < Main.tours.size(); i++) {
+            if (Main.tours.get(i).getMinAttendants() >= minAttendants && Main.tours.get(i).getMaxAttendants() <= maxAttendants) {
+                System.out.println(Main.tours.get(i).toString());
                 flag = true;
             }
         }
         if (!flag) {
             System.out.println("Tour wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInPriceTour() {
-        Scanner input = new Scanner(System.in);
-        boolean flag = false;
-        int price, choice, secondPrice;
-        System.out.println("Enter 1 to search by a specific price");
-        System.out.println("Enter 2 to search prices that are bigger than a number");
-        System.out.println("Enter 3 to search prices that are smaller than a number");
-        System.out.println("Enter 4 to search prices which are between two numbers");
-        choice = input.nextInt();
-        switch (choice) {
-            case 1:
-                System.out.println("Enter a price");
-                price = input.nextInt();
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (Main.foreignTours.get(i).getPrice() == price) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (Main.localTours.get(i).getPrice() == price) {
-                        System.out.println(Main.localTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                break;
-            case 2:
-                System.out.println("Enter minimum price");
-                price = input.nextInt();
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (Main.foreignTours.get(i).getPrice() >= price) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (Main.localTours.get(i).getPrice() >= price) {
-                        System.out.println(Main.localTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                break;
-            case 3:
-                System.out.println("Enter maximum price");
-                price = input.nextInt();
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (Main.foreignTours.get(i).getPrice() <= price) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (Main.localTours.get(i).getPrice() <= price) {
-                        System.out.println(Main.localTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                break;
-            case 4:
-                System.out.println("Enter minimum price");
-                price = input.nextInt();
-                System.out.println("Enter maximum price");
-                secondPrice = input.nextInt();
-                for (int i = 0; i < Main.foreignTours.size(); i++) {
-                    if (Main.foreignTours.get(i).getPrice() >= price && Main.foreignTours.get(i).getPrice() <= secondPrice) {
-                        System.out.println(Main.foreignTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                for (int i = 0; i < Main.localTours.size(); i++) {
-                    if (Main.localTours.get(i).getPrice() >= price && Main.localTours.get(i).getPrice() <= secondPrice) {
-                        System.out.println(Main.localTours.get(i).toString());
-                        flag = true;
-                    }
-                }
-                break;
-        }
-        if (!flag) {
-            System.out.println("Tour wasn't found");
-        }
-        backToMenu();
-    }
-
-    public static void backToMenu() {
+    public static void backToMenu(Person person) {
         int answer;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to go to tour menu");
         System.out.println("Enter 2 to go to main menu");
         answer = input.nextInt();
         if (answer == 1) {
-            Menu.tourMenu();
+            Menu.tourMenu(person);
         } else if (answer == 2) {
-            Menu.mainMenu();
+            Menu.mainMenu(person);
         }
     }
 }

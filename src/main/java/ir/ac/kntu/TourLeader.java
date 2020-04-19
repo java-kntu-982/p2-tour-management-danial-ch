@@ -1,22 +1,39 @@
 package ir.ac.kntu;
 
 import java.util.LinkedList;
-import java.util.Objects;
 
-public class TourLeader {
+public class TourLeader extends Person{
     private int age;
-    private String FName;
-    private String LName;
+    private String fName;
+    private String lName;
     private String nationalCode;
     private String idNumber;
     private boolean married;
-    private ir.ac.kntu.Date birthDate;
-    private ir.ac.kntu.Date registerDate;
-    private LinkedList<Location> knownLocations = new LinkedList<Location>();
+    private Date birthDate;
+    private Date registerDate;
+    private LinkedList<City> knownCities = new LinkedList<>();
     private LinkedList<Country> knownCountries = new LinkedList<>();
     private Tour currentTour;
-    private ForeignTour foreignTour = null;
-    private LocalTour localTour = null;
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public TourLeader() {
+        this.accessLevel=2;
+    }
+
+    public LinkedList<City> getKnownCities() {
+        return knownCities;
+    }
+
+    public void setKnownCities(LinkedList<City> knownCities) {
+        this.knownCities = knownCities;
+    }
 
     public int getAge() {
         return age;
@@ -24,22 +41,6 @@ public class TourLeader {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public ForeignTour getForeignTour() {
-        return foreignTour;
-    }
-
-    public void setForeignTour(ForeignTour foreignTour) {
-        this.foreignTour = foreignTour;
-    }
-
-    public LocalTour getLocalTour() {
-        return localTour;
-    }
-
-    public void setLocalTour(LocalTour localTour) {
-        this.localTour = localTour;
     }
 
     public LinkedList<Country> getKnownCountries() {
@@ -51,23 +52,19 @@ public class TourLeader {
     }
 
     public String getFName() {
-        return FName;
+        return fName;
     }
 
     public void setFName(String fName) {
-        this.FName = fName;
+        this.fName = fName;
     }
 
     public String getLName() {
-        return LName;
+        return lName;
     }
 
     public void setLName(String lName) {
-        this.LName = lName;
-    }
-
-    public String getNationalCode() {
-        return nationalCode;
+        this.lName = lName;
     }
 
     public void setNationalCode(String nationalCode) {
@@ -82,37 +79,18 @@ public class TourLeader {
         this.idNumber = idNumber;
     }
 
-    public boolean isMarried() {
-        return married;
-    }
-
     public void setMarried(boolean married) {
         this.married = married;
-    }
-
-    public ir.ac.kntu.Date getBirthDate() {
-        return birthDate;
     }
 
     public void setBirthDate(ir.ac.kntu.Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public ir.ac.kntu.Date getRegisterDate() {
-        return registerDate;
-    }
-
     public void setRegisterDate(ir.ac.kntu.Date registerDate) {
         this.registerDate = registerDate;
     }
 
-    public LinkedList<Location> getKnownLocations() {
-        return knownLocations;
-    }
-
-    public void setKnownLocations(LinkedList<Location> knownLocations) {
-        this.knownLocations = knownLocations;
-    }
 
     public Tour getCurrentTour() {
         return currentTour;
@@ -122,45 +100,12 @@ public class TourLeader {
         this.currentTour = currentTour;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TourLeader that = (TourLeader) o;
-        return married == that.married &&
-                Objects.equals(FName, that.FName) &&
-                Objects.equals(LName, that.LName) &&
-                Objects.equals(nationalCode, that.nationalCode) &&
-                Objects.equals(idNumber, that.idNumber) &&
-                Objects.equals(birthDate, that.birthDate) &&
-                Objects.equals(registerDate, that.registerDate) &&
-                Objects.equals(knownLocations, that.knownLocations) &&
-                Objects.equals(knownCountries, that.knownCountries) &&
-                Objects.equals(currentTour, that.currentTour) &&
-                Objects.equals(foreignTour, that.foreignTour) &&
-                Objects.equals(localTour, that.localTour);
-    }
-
-    public int hashCode() {
-        return Objects.hash(FName, LName, nationalCode, idNumber, married, birthDate, registerDate, knownLocations, knownCountries, currentTour, foreignTour, localTour);
-    }
-
     public String toString() {
-        StringBuilder countries = new StringBuilder();
-        StringBuilder cities = new StringBuilder();
-        for (int i = 0; i < this.getKnownCountries().size(); i++) {
-            countries.append(this.getKnownCountries().get(i).getName()).append(",");
-        }
-        for (int i = 0; i < this.getKnownLocations().size(); i++) {
-            cities.append(this.getKnownLocations().get(i).getCityName()).append(",");
-        }
-        return "FName='" + FName + '\'' +
-                ", LName='" + LName + '\'' +
+        return ", FName='" + fName + '\'' +
+                ", LName='" + lName + '\'' +
+                ", age=" + age + '\'' +
                 ", nationalCode='" + nationalCode + '\'' +
                 ", idNumber='" + idNumber + '\'' +
-                ", married=" + married +
-                ", birthDate=" + birthDate +
-                ", registerDate=" + registerDate +
-                ", knownLocations=" + countries.toString() + cities.toString() +
-                ", currentTour=" + currentTour;
+                ", married=" + married;
     }
 }

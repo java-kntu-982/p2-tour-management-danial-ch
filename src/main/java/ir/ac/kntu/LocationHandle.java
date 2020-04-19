@@ -5,72 +5,69 @@ import java.util.Scanner;
 
 public class LocationHandle {
 
-    public static void seeAllLocations() {
+    public static void seeAllLocations(Person person) {
         ////ClearScreen.cls();
-        int temp;
-        for (int i = 0; i < Main.locations.size(); i++) {
-            System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
+        System.out.println("Cities:");
+        for (int i = 0; i < Main.cities.size(); i++) {
+            System.out.println((i + 1) + ")" + Main.cities.get(i).getCityName());
         }
-        temp = Main.locations.size();
+        System.out.println("Countries:");
         for (int i = 0; i < Main.countries.size(); i++) {
-            System.out.println((temp + i + 1) + ")" + Main.countries.get(i).getName());
+            System.out.println((i + 1) + ")" + Main.countries.get(i).getName());
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void addCountry() {
-        ////ClearScreen.cls();
-        String name;
-        LinkedList<Location> locations = new LinkedList<>();
+    public static void addCountryBase(Country country) {
         Scanner input = new Scanner(System.in);
-        Country country = new Country();
+        String name;
+        LinkedList<City> cities = new LinkedList<>();
         System.out.println("Enter country's name");
         name = input.nextLine();
         System.out.println("choose country's locations");
         while (true) {
             int tempLocation, i;
             ////ClearScreen.cls();
-            for (i = 0; i < Main.locations.size(); i++) {
-                if (Main.locations.get(i).isShow()) {
-                    System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
-                }
+            for (i = 0; i < Main.cities.size(); i++) {
+                System.out.println((i + 1) + ")" + Main.cities.get(i).getCityName());
             }
-            System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
+            System.out.println((i + 1) + ")Enter " + (i + 1) + " to finish");
             tempLocation = input.nextInt();
-            if (tempLocation == i + 2) {
+            if (tempLocation == i + 1) {
                 break;
             }
-            for (int j = 0; j < Main.locations.size(); j++) {
+            for (int j = 0; j < Main.cities.size(); j++) {
                 if (i == j) {
-                    locations.add(Main.locations.get(j));
-                    Main.locations.get(j).setCountry(country);
-                    Main.locations.get(j).setShow(false);
+                    cities.add(Main.cities.get(j));
                 }
             }
         }
-        for (int i = 0; i < Main.locations.size(); i++) {
-            Main.locations.get(i).setShow(true);
-        }
         country.setName(name);
-        country.setLocations(locations);
-        Main.countries.add(country);
-        System.out.println("Country added successfully");
-        backToMenu();
+        country.setLocations(cities);
     }
 
-    public static void addCity() {
+    public static void addCountry(Person person) {
+        ////ClearScreen.cls();
+        Country country = new Country();
+        addCountryBase(country);
+        Main.countries.add(country);
+        System.out.println("Country added successfully");
+        backToMenu(person);
+    }
+
+    public static void addCity(Person person) {
         ////ClearScreen.cls();
         String name;
         Scanner input = new Scanner(System.in);
-        Location location = new Location();
+        City city = new City();
         System.out.println("Enter city's name");
         name = input.nextLine();
-        location.setCityName(name);
-        Main.locations.add(location);
-        backToMenu();
+        city.setCityName(name);
+        Main.cities.add(city);
+        backToMenu(person);
     }
 
-    public static void deleteCountry() {
+    public static void deleteCountry(Person person) {
         ////ClearScreen.cls();
         String name;
         boolean flag = false;
@@ -89,19 +86,19 @@ public class LocationHandle {
         } else {
             System.out.println("Country wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void deleteCity() {
+    public static void deleteCity(Person person) {
         ////ClearScreen.cls();
         String name;
         boolean flag = false;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter city's name");
         name = input.nextLine();
-        for (int i = 0; i < Main.locations.size(); i++) {
-            if (Main.locations.get(i).getCityName().equals(name)) {
-                Main.locations.remove(i);
+        for (int i = 0; i < Main.cities.size(); i++) {
+            if (Main.cities.get(i).getCityName().equals(name)) {
+                Main.cities.remove(i);
                 flag = true;
                 break;
             }
@@ -111,65 +108,38 @@ public class LocationHandle {
         } else {
             System.out.println("City wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void editCountry() {
+    public static void editCountry(Person person) {
         Scanner input = new Scanner(System.in);
-        int position;
         String name;
         boolean flag = false;
-        LinkedList<Location> locations = new LinkedList<>();
-        Country country = new Country();
         System.out.println("Enter country's name to edit it");
         name = input.nextLine();
         for (int i = 0; i < Main.countries.size(); i++) {
             if (Main.countries.get(i).getName().equals(name)) {
-                position = i;
+                addCountryBase(Main.countries.get(i));
                 flag = true;
-                System.out.println("Enter country's name");
-                name = input.nextLine();
-                System.out.println("choose country's locations");
-                while (true) {
-                    int tempLocation;
-                    for (i = 0; i < Main.locations.size(); i++) {
-                        System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
-                    }
-                    System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
-                    tempLocation = input.nextInt();
-                    if (tempLocation == i + 2) {
-                        break;
-                    }
-                    for (int j = 0; j < Main.locations.size(); j++) {
-                        if (i == j) {
-                            locations.add(Main.locations.get(j));
-                            Main.locations.get(j).setCountry(country);
-                        }
-                    }
-                }
-                country.setName(name);
-                country.setLocations(locations);
-                Main.countries.remove(position);
-                Main.countries.add(position, country);
                 System.out.println("Country edited successfully");
             }
         }
         if (!flag) {
             System.out.println("Country wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void backToMenu() {
+    public static void backToMenu(Person person) {
         int answer;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to go to locations menu");
         System.out.println("Enter 2 to go to main menu");
         answer = input.nextInt();
         if (answer == 1) {
-            Menu.locationsMenu();
+            Menu.locationsMenu(person);
         } else if (answer == 2) {
-            Menu.mainMenu();
+            Menu.mainMenu(person);
         }
     }
 }

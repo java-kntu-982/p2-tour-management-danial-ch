@@ -1,30 +1,26 @@
 package ir.ac.kntu;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class TourLeaderHandle {
 
-    public static void seeAllLeaders() {
+    public static void seeAllLeaders(Person person) {
         //ClearScreen.cls();
         for (int i = 0; i < Main.tourLeaders.size(); i++) {
             System.out.println((i + 1) + ")" + Main.tourLeaders.get(i).toString());
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void addLeader() {
-        //ClearScreen.cls();
+    public static void addLeaderBase(TourLeader tourLeader){
+        Scanner input = new Scanner(System.in);
         String fName, lName, nationalCode, idNumber, temp;
-        int birthYear, birthMonth, birthDay, registerYear, registerMonth, registerDay;
+        int birthYear, birthMonth, birthDay, registerYear, registerMonth, registerDay,i;
         boolean married = false;
         Date birthDate, registerDate;
-        LinkedList<Location> knownLocations = new LinkedList<>();
+        LinkedList<City> knownCities = new LinkedList<>();
         LinkedList<Country> knownCountries = new LinkedList<>();
-        Scanner input = new Scanner(System.in);
-        TourLeader tourLeader = new TourLeader();
         System.out.println("Enter first name");
         fName = input.nextLine();
         System.out.println("Enter last name");
@@ -37,8 +33,6 @@ public class TourLeaderHandle {
         temp = input.nextLine();
         if (temp.equals("y")) {
             married = true;
-        } else if (temp.equals("n")) {
-            married = false;
         }
         System.out.println("Enter birth year");
         birthYear = input.nextInt();
@@ -56,30 +50,30 @@ public class TourLeaderHandle {
         registerDate = new Date(registerYear, registerMonth, registerDay);
         System.out.println("Enter a city's number to add it to tour leader's known locations");
         while (true) {
-            int tempLocation, i;
-            for (i = 0; i < Main.locations.size(); i++) {
-                System.out.println((i + 1) + ") " + Main.locations.get(i).getCityName());
+            int tempLocation;
+            for (i = 0; i < Main.cities.size(); i++) {
+                System.out.println((i + 1) + ") " + Main.cities.get(i).getCityName());
             }
-            System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
+            System.out.println((i + 1) + ")Enter " + (i + 1) + " to finish");
             tempLocation = input.nextInt();
-            if (tempLocation == i + 2) {
+            if (tempLocation == i + 1) {
                 break;
             }
-            for (int j = 0; j < Main.locations.size(); j++) {
+            for (int j = 0; j < Main.cities.size(); j++) {
                 if (i - 1 == j) {
-                    knownLocations.add(Main.locations.get(j));
+                    knownCities.add(Main.cities.get(j));
                 }
             }
         }
         System.out.println("Enter a country's number to add it to tour leader's known countries");
         while (true) {
-            int tempLocation, i;
+            int tempLocation;
             for (i = 0; i < Main.countries.size(); i++) {
                 System.out.println((i + 1) + ")" + Main.countries.get(i).getName());
             }
-            System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
+            System.out.println((i + 1) + ")Enter " + (i + 1) + " to finish");
             tempLocation = input.nextInt();
-            if (tempLocation == i + 2) {
+            if (tempLocation == i + 1) {
                 break;
             }
             for (int j = 0; j < Main.countries.size(); j++) {
@@ -88,26 +82,71 @@ public class TourLeaderHandle {
                 }
             }
         }
-        tourLeader.setAge(2020 - birthYear);
-        tourLeader.setFName(fName);
         tourLeader.setLName(lName);
-        tourLeader.setIdNumber(idNumber);
+        tourLeader.setFName(fName);
         tourLeader.setNationalCode(nationalCode);
+        tourLeader.setIdNumber(idNumber);
+        tourLeader.setAge(2020-birthYear);
+        tourLeader.setKnownCountries(knownCountries);
+        tourLeader.setKnownCities(knownCities);
+        tourLeader.setRegisterDate(registerDate);
+        tourLeader.setBirthDate(birthDate);
         tourLeader.setMarried(married);
         tourLeader.setCurrentTour(null);
-        tourLeader.setBirthDate(birthDate);
-        tourLeader.setRegisterDate(registerDate);
-        tourLeader.setKnownLocations(knownLocations);
-        tourLeader.setKnownCountries(knownCountries);
-        Main.tourLeaders.add(tourLeader);
-        System.out.println("Tour leader added successfully");
-        backToMenu();
     }
 
-    public static void deleteLeader() {
+    public static void addLeader(Person person) {
+        //ClearScreen.cls();
+        int i;
+        TourLeader tourLeader = new TourLeader();
+        String username ="", password="", email="", phoneNumber="";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter 1 to add a tour leader from basics");
+        System.out.println("Enter 2 to complete an already available leader");
+        int initialChoice=input.nextInt();
+        if(initialChoice==1){
+            for(i=0;i<Main.people.size();i++){
+                if(Main.people.get(i).getAccessLevel()==2){
+                    System.out.println((i+1)+")"+Main.people.get(i).userName);
+                }
+            }
+            int tourLeaderChoice=input.nextInt()-1;
+            for(i=0;i<Main.people.size();i++){
+                if(Main.people.get(i).getAccessLevel()==2){
+                    if(tourLeaderChoice==i){
+                        username=Main.people.get(i).userName;
+                        password=Main.people.get(i).passWord;
+                        email=Main.people.get(i).email;
+                        phoneNumber=Main.people.get(i).phoneNumber;
+                        Person prs=new Person(username,password,email,phoneNumber,2);
+                        Main.people.add(prs);
+                    }
+                }
+            }
+        } else{
+            System.out.println("Enter username");
+            username = input.nextLine();
+            System.out.println("Enter password");
+            password = input.nextLine();
+            System.out.println("Enter email");
+            email = input.nextLine();
+            System.out.println("Enter phone number");
+            phoneNumber = input.nextLine();
+        }
+        tourLeader.userName=username;
+        tourLeader.passWord=password;
+        tourLeader.email=email;
+        tourLeader.phoneNumber=phoneNumber;
+        addLeaderBase(tourLeader);
+        Main.tourLeaders.add(tourLeader);
+        System.out.println("Tour leader added successfully");
+        backToMenu(person);
+    }
+
+    public static void deleteLeader(Person person) {
+        //ClearScreen.cls();
         Scanner input = new Scanner(System.in);
         boolean flag = false;
-        //ClearScreen.cls();
         System.out.println("Enter tour leader's ID number to delete him/her from system");
         String idNumber = input.nextLine();
         for (int i = 0; i < Main.tourLeaders.size(); i++) {
@@ -121,96 +160,19 @@ public class TourLeaderHandle {
         if (!flag) {
             System.out.println("Tour leader wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void editLeader() {
+    public static void editLeader(Person person) {
         //ClearScreen.cls();
-        String fName, lName, nationalCode, idNumber, temp;
-        int birthYear, birthMonth, birthDay, registerYear, registerMonth, registerDay;
-        boolean married = false, flag = false;
-        Date birthDate, registerDate;
-        LinkedList<Location> knownLocations = new LinkedList<>();
-        LinkedList<Country> knownCountries = new LinkedList<>();
+        boolean flag=false;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter tour leader's ID number to edit him/her");
         String idNumberTemp = input.nextLine();
         for (int k = 0; k < Main.tourLeaders.size(); k++) {
             if (Main.tourLeaders.get(k).getIdNumber().equals(idNumberTemp)) {
                 TourLeader tourLeader = Main.tourLeaders.get(k);
-                System.out.println("Enter new first name");
-                fName = input.nextLine();
-                System.out.println("Enter new last name");
-                lName = input.nextLine();
-                System.out.println("Enter new national code name");
-                nationalCode = input.nextLine();
-                System.out.println("Enter new ID number name");
-                idNumber = input.nextLine();
-                System.out.println("Is he/she married?(y/n)");
-                temp = input.nextLine();
-                if (temp.equals("y")) {
-                    married = true;
-                } else if (temp.equals("n")) {
-                    married = false;
-                }
-                System.out.println("Enter new birth year");
-                birthYear = input.nextInt();
-                System.out.println("Enter new birth month");
-                birthMonth = input.nextInt();
-                System.out.println("Enter new birth day");
-                birthDay = input.nextInt();
-                birthDate = new Date(birthYear, birthMonth, birthDay);
-                System.out.println("Enter new register year");
-                registerYear = input.nextInt();
-                System.out.println("Enter new register month");
-                registerMonth = input.nextInt();
-                System.out.println("Enter new register day");
-                registerDay = input.nextInt();
-                registerDate = new Date(registerYear, registerMonth, registerDay);
-                System.out.println("Tour leader's known locations hast been deleted\nEnter a city's number to add it to tour leader's known locations");
-                while (true) {
-                    int tempLocation, i;
-                    for (i = 0; i < Main.locations.size(); i++) {
-                        System.out.println((i + 1) + ") " + Main.locations.get(i).getCityName());
-                    }
-                    System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
-                    tempLocation = input.nextInt();
-                    if (tempLocation == i + 2) {
-                        break;
-                    }
-                    for (int j = 0; j < Main.locations.size(); j++) {
-                        if (i - 1 == j) {
-                            knownLocations.add(Main.locations.get(j));
-                        }
-                    }
-                }
-                System.out.println("Enter a country's number to add it to tour leader's known countries");
-                while (true) {
-                    int tempLocation, i;
-                    for (i = 0; i < Main.countries.size(); i++) {
-                        System.out.println((i + 1) + ")" + Main.countries.get(i).getName());
-                    }
-                    System.out.println((i + 2) + ")Enter " + (i + 2) + " to finish");
-                    tempLocation = input.nextInt();
-                    if (tempLocation == i + 2) {
-                        break;
-                    }
-                    for (int j = 0; j < Main.countries.size(); j++) {
-                        if (i - 1 == j) {
-                            knownCountries.add(Main.countries.get(j));
-                        }
-                    }
-                }
-                tourLeader.setAge(2020 - birthYear);
-                tourLeader.setFName(fName);
-                tourLeader.setLName(lName);
-                tourLeader.setIdNumber(idNumber);
-                tourLeader.setNationalCode(nationalCode);
-                tourLeader.setMarried(married);
-                tourLeader.setCurrentTour(null);
-                tourLeader.setBirthDate(birthDate);
-                tourLeader.setRegisterDate(registerDate);
-                tourLeader.setKnownLocations(knownLocations);
+                addLeaderBase(tourLeader);
                 System.out.println("Tour leader edited successfully");
                 flag = true;
                 break;
@@ -219,10 +181,10 @@ public class TourLeaderHandle {
         if (!flag) {
             System.out.println("Tour leader wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchInTourLeaders() {
+    public static void searchInTourLeaders(Person person) {
         //ClearScreen.cls();
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 Search By first name");
@@ -232,26 +194,25 @@ public class TourLeaderHandle {
         int answer = input.nextInt();
         switch (answer) {
             case 1:
-                searchByFName();
+                searchByFName(person);
                 break;
             case 2:
-                searchByLName();
+                searchByLName(person);
                 break;
             case 3:
-                searchByKnownLocations();
+                searchByKnownLocations(person);
                 break;
             case 4:
-                searchByAge();
+                searchByAge(person);
                 break;
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchByFName() {
+    public static void searchByFName(Person person) {
         //ClearScreen.cls();
         String fName;
         boolean flag = false;
-        //ClearScreen.cls();
         Scanner input = new Scanner(System.in);
         System.out.println("Enter first name");
         fName = input.nextLine();
@@ -265,10 +226,10 @@ public class TourLeaderHandle {
         if (!flag) {
             System.out.println("Tour leader wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchByLName() {
+    public static void searchByLName(Person person) {
         //ClearScreen.cls();
         String lName;
         boolean flag = false;
@@ -286,16 +247,15 @@ public class TourLeaderHandle {
         if (!flag) {
             System.out.println("Tour leader wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchByKnownLocations() {
+    public static void searchByKnownLocations(Person person) {
         //ClearScreen.cls();
-        Location location = new Location();
+        City city = new City();
         Country country = new Country();
         boolean flag = false;
         int i, answer, j, choice;
-        //ClearScreen.cls();
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to Search in countries");
         System.out.println("Enter 2 to Search in cities");
@@ -322,19 +282,19 @@ public class TourLeaderHandle {
                 }
             }
         } else if (choice == 2) {
-            for (i = 0; i < Main.locations.size(); i++) {
-                System.out.println((i + 1) + ")" + Main.locations.get(i).getCityName());
+            for (i = 0; i < Main.cities.size(); i++) {
+                System.out.println((i + 1) + ")" + Main.cities.get(i).getCityName());
             }
             answer = input.nextInt();
-            for (i = 0; i < Main.locations.size(); i++) {
+            for (i = 0; i < Main.cities.size(); i++) {
                 if (i == answer) {
-                    location = Main.locations.get(i);
+                    city = Main.cities.get(i);
                     break;
                 }
             }
             for (i = 0; i < Main.tourLeaders.size(); i++) {
-                for (j = 0; j < Main.tourLeaders.get(i).getKnownLocations().size(); j++) {
-                    if (Main.tourLeaders.get(i).getKnownLocations().get(j).equals(location)) {
+                for (j = 0; j < Main.tourLeaders.get(i).getKnownCities().size(); j++) {
+                    if (Main.tourLeaders.get(i).getKnownCities().get(j).equals(city)) {
                         System.out.println(Main.tourLeaders.get(i).toString());
                         flag = true;
                         break;
@@ -345,10 +305,10 @@ public class TourLeaderHandle {
         if (!flag) {
             System.out.println("Tour leader wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void searchByAge() {
+    public static void searchByAge(Person person) {
         //ClearScreen.cls();
         int answer, smallerThanNumber, biggerThanNumber;
         boolean flag = false;
@@ -410,19 +370,19 @@ public class TourLeaderHandle {
         if (!flag) {
             System.out.println("Tour leader wasn't found");
         }
-        backToMenu();
+        backToMenu(person);
     }
 
-    public static void backToMenu() {
+    public static void backToMenu(Person person) {
         int answer;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter 1 to go to tour leader menu");
         System.out.println("Enter 2 to go to main menu");
         answer = input.nextInt();
         if (answer == 1) {
-            Menu.tourLeaderMenu();
+            Menu.tourLeaderMenu(person);
         } else if (answer == 2) {
-            Menu.mainMenu();
+            Menu.mainMenu(person);
         }
     }
 }

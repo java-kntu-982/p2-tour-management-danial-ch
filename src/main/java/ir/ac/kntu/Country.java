@@ -5,16 +5,7 @@ import java.util.Objects;
 
 public class Country {
     private String name;
-    private LinkedList<Location> locations = new LinkedList<>();
-    private boolean show = true;
-
-    public boolean isShow() {
-        return show;
-    }
-
-    public void setShow(boolean show) {
-        this.show = show;
-    }
+    private LinkedList<City> cities = new LinkedList<>();
 
     public String getName() {
         return name;
@@ -24,24 +15,28 @@ public class Country {
         this.name = name;
     }
 
-    public LinkedList<Location> getLocations() {
-        return locations;
+    public LinkedList<City> getLocations() {
+        return cities;
     }
 
-    public void setLocations(LinkedList<Location> locations) {
-        this.locations = locations;
+    public void setLocations(LinkedList<City> locations) {
+        this.cities = locations;
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Country country = (Country) o;
         return Objects.equals(name, country.name) &&
-                Objects.equals(locations, country.locations);
+                Objects.equals(cities, country.cities);
     }
 
     public int hashCode() {
-        return Objects.hash(name, locations);
+        return Objects.hash(name, cities);
     }
 
     Country() {
